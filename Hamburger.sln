@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamburger.Repository.Abstraction", "Hamburger.Repository.Abstraction\Hamburger.Repository.Abstraction.csproj", "{7CCE5294-5520-4707-A0A9-33E17F1C6BA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hamburger.Repository.Abstraction", "Hamburger.Repository.Abstraction\Hamburger.Repository.Abstraction.csproj", "{7CCE5294-5520-4707-A0A9-33E17F1C6BA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamburger.Repository.EF", "Hamburger.Repository.EF\Hamburger.Repository.EF.csproj", "{5172DBC4-6F34-4554-AAB0-BA88904AD40E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamburger.Repository.Dapper", "Hamburger.Repository.Dapper\Hamburger.Repository.Dapper.csproj", "{45C804A3-7FD7-4EB9-B380-65E492FD10AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamburger.Services", "Hamburger.Services\Hamburger.Services.csproj", "{BE708F34-0FE2-4CB0-8DD8-3B18FA314E4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamburger.Models", "Hamburger.Models\Hamburger.Models.csproj", "{67FB89C6-8047-4F36-9F3F-465CBACF5685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamburger.Helpers", "Hamburger.Helpers\Hamburger.Helpers.csproj", "{8C8DD88E-31A8-4A94-86F0-FCEF2ABCE308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamburger.Api", "Hamburger.Api\Hamburger.Api.csproj", "{A3182154-2325-4B76-8AA5-44BADFD679EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +27,30 @@ Global
 		{7CCE5294-5520-4707-A0A9-33E17F1C6BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CCE5294-5520-4707-A0A9-33E17F1C6BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CCE5294-5520-4707-A0A9-33E17F1C6BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5172DBC4-6F34-4554-AAB0-BA88904AD40E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5172DBC4-6F34-4554-AAB0-BA88904AD40E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5172DBC4-6F34-4554-AAB0-BA88904AD40E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5172DBC4-6F34-4554-AAB0-BA88904AD40E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C804A3-7FD7-4EB9-B380-65E492FD10AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C804A3-7FD7-4EB9-B380-65E492FD10AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45C804A3-7FD7-4EB9-B380-65E492FD10AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C804A3-7FD7-4EB9-B380-65E492FD10AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE708F34-0FE2-4CB0-8DD8-3B18FA314E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE708F34-0FE2-4CB0-8DD8-3B18FA314E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE708F34-0FE2-4CB0-8DD8-3B18FA314E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE708F34-0FE2-4CB0-8DD8-3B18FA314E4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67FB89C6-8047-4F36-9F3F-465CBACF5685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67FB89C6-8047-4F36-9F3F-465CBACF5685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67FB89C6-8047-4F36-9F3F-465CBACF5685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67FB89C6-8047-4F36-9F3F-465CBACF5685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C8DD88E-31A8-4A94-86F0-FCEF2ABCE308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C8DD88E-31A8-4A94-86F0-FCEF2ABCE308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C8DD88E-31A8-4A94-86F0-FCEF2ABCE308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C8DD88E-31A8-4A94-86F0-FCEF2ABCE308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3182154-2325-4B76-8AA5-44BADFD679EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3182154-2325-4B76-8AA5-44BADFD679EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3182154-2325-4B76-8AA5-44BADFD679EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3182154-2325-4B76-8AA5-44BADFD679EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

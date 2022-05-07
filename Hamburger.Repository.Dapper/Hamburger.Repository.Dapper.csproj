@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hamburger.Helpers\Hamburger.Helpers.csproj" />
+    <ProjectReference Include="..\Hamburger.Models\Hamburger.Models.csproj" />
+    <ProjectReference Include="..\Hamburger.Repository.Abstraction\Hamburger.Repository.Abstraction.csproj" />
+  </ItemGroup>
+
+</Project>
