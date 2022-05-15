@@ -21,6 +21,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Text;
 
 namespace Hamburger.Api
@@ -62,7 +64,7 @@ namespace Hamburger.Api
             services.AddAutoMapper(typeof(UserMapperProfile));
 
             // Entity Framework
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(AppSettings.Database.ConnectionString));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=AppApi;integrated security=true;Trusted_Connection=True"));
 
             // For Identity
             services.AddIdentity<User, Role>()
@@ -109,7 +111,11 @@ namespace Hamburger.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoginSessionRepository, LoginSessionRepository>();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                //options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hamburger.Api", Version = "v1" });

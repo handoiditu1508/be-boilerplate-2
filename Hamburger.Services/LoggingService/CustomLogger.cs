@@ -33,7 +33,7 @@ namespace Hamburger.Services.LoggingService
                     var message = formatter(state, exception);
                     exception = CustomException.System.UnexpectedError(message);
                 }
-                _httpHelper.Post("api/MongoLogging/InsertLogs", exception.ToInsertLogRequest(logLevel)).Wait();
+                _httpHelper.Post("api/MongoLogging/InsertLog", exception.ToInsertLogRequest(logLevel)).Wait();
             }
             catch
             { }

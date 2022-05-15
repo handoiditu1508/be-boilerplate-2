@@ -180,9 +180,13 @@ namespace Hamburger.Services.UserService
             var role = await _roleManager.FindByNameAsync(EnumDefaultRole.Admin.GetDescription());
 
             // add claims to role
-            var tasks = typeof(PermissionClaimValues).GetFields().Select(f => _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, f.GetValue(null).ToString())));
-            var addClaimsresults = await Task.WhenAll(tasks);
-            if (addClaimsresults.Any(r => !r.Succeeded))
+            var addClaimsResults = new List<IdentityResult>();
+            foreach (var field in typeof(PermissionClaimValues).GetFields())
+            {
+                var result = await _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, field.GetValue(null).ToString()));
+                addClaimsResults.Add(result);
+            }
+            if (addClaimsResults.Any(r => !r.Succeeded))
                 throw CustomException.Authenticate.AddRolesFailed(string.Empty);
         }
 
@@ -203,13 +207,10 @@ namespace Hamburger.Services.UserService
             var role = await _roleManager.FindByNameAsync(EnumDefaultRole.User.GetDescription());
 
             // add claims to role
-            var tasks = new List<Task<IdentityResult>>
-            {
-                _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PermissionClaimValues.ViewUsers)),
-                _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PermissionClaimValues.UpdateUsers))
-            };
-            var addClaimsresults = await Task.WhenAll(tasks);
-            if (addClaimsresults.Any(r => !r.Succeeded))
+            var addClaimsResults = new List<IdentityResult>();
+            addClaimsResults.Add(await _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PermissionClaimValues.ViewUsers)));
+            addClaimsResults.Add(await _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PermissionClaimValues.UpdateUsers)));
+            if (addClaimsResults.Any(r => !r.Succeeded))
                 throw CustomException.Authenticate.AddRolesFailed(string.Empty);
         }
 

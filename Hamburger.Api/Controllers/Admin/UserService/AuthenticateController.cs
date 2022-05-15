@@ -51,7 +51,7 @@ namespace Hamburger.Api.Controllers.Admin.UserService
             try
             {
                 request.UserAgent = HttpContext.Request.Headers["User-Agent"];
-                var result = _userService.Register(request);
+                var result = await _userService.Register(request);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -85,7 +85,7 @@ namespace Hamburger.Api.Controllers.Admin.UserService
             try
             {
                 request.UserAgent = HttpContext.Request.Headers["User-Agent"];
-                var result = _userService.RegisterAdmin(request);
+                var result = await _userService.RegisterAdmin(request);
                 return Ok(result);
             }
             catch (Exception ex)

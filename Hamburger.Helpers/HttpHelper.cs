@@ -28,7 +28,8 @@ namespace Hamburger.Helpers
 
         public void UseApiKeyAuthentication(string key, string value)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(key, value);
+            //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(key, value);
+            _httpClient.DefaultRequestHeaders.Add(key, value);
         }
 
         public void SetTimeout(int seconds)
