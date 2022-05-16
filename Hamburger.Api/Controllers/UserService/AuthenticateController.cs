@@ -82,9 +82,6 @@ namespace Hamburger.Api.Controllers.UserService
         {
             try
             {
-                var exception = new Exception("Test");
-                var simpleEx = exception.ToSimpleError();
-                return StatusCode(StatusCodes.Status500InternalServerError, simpleEx);
                 request.UserAgent = HttpContext.Request.Headers["User-Agent"];
                 var result = await _userService.RegisterUser(request);
                 return Ok(result);

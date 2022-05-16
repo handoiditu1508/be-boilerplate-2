@@ -24,7 +24,7 @@ namespace Hamburger.Services.LoggingService
 
         public bool IsEnabled(LogLevel logLevel) => true;
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Hamburger.Services.LoggingService
                     var message = formatter(state, exception);
                     exception = CustomException.System.UnexpectedError(message);
                 }
-                _httpHelper.Post("api/MongoLogging/InsertLog", exception.ToInsertLogRequest(logLevel)).Wait();
+                _httpHelper.Post("api/MongoLogging/InsertLog", exception.ToInsertLogRequest(logLevel));
             }
             catch
             { }

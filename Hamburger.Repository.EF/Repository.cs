@@ -198,46 +198,70 @@ namespace Hamburger.Repository.EF
 
         public async Task Remove(params object[] compositeIds)
         {
-            var entity = new T();
-
-            SetKeysForEntity(entity, compositeIds);
-
-            _context.Attach(entity);
-            _context.Remove(entity);
+            UpdateEntityStateAsRemoved(compositeIds);
 
             await _context.SaveChangesAsync();
         }
 
         public async Task RemoveMany(IEnumerable<object> ids)
         {
-            var entities = ids.Select(id =>
+            foreach (var id in ids)
             {
-                var entity = new T();
-                _primaryKeyProperty.SetValue(entity, id);
-
-                _context.Attach(entity);
-                _context.Remove(entity);
-
-                return entity;
-            });
+                UpdateEntityStateAsRemoved(id);
+            }
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveMany(IEnumerable<IEnumerable<object>> listCompositeIds)
+        public async Task RemoveManyCompositeKeys<U>(IEnumerable<IEnumerable<U>> listCompositeIds)
         {
-            var entities = listCompositeIds.Select(compositeIds =>
+            foreach (var compositeIds in listCompositeIds)
             {
-                var entity = new T();
+                UpdateEntityStateAsRemoved(compositeIds.ToArray());
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        private void UpdateEntityStateAsRemoved(params object[] compositeIds)
+        {
+            // check entity is being tracked by DbContext or not
+            T entity = null;
+            var entry = _context.ChangeTracker.Entries<T>().FirstOrDefault(entry => CheckEntityMatchIds(entry.Entity, compositeIds));
+
+            // entity is being tracked
+            if (entry != null)
+            {
+                entity = entry.Entity;
+                _context.Remove(entity);
+            }
+            else
+            {
+                entity = new T();
+
                 SetKeysForEntity(entity, compositeIds);
 
                 _context.Attach(entity);
                 _context.Remove(entity);
+            }
+        }
 
-                return entity;
-            });
+        private bool CheckEntityMatchIds(T entity, params object[] compositeIds)
+        {
+            for (int i = 0; i < _primaryKeyProperties.Count; i++)
+            {
+                var keyProp = _primaryKeyProperties[i];
+                var keyValue = keyProp.GetValue(entity);
 
-            await _context.SaveChangesAsync();
+                if (compositeIds[i].Equals(keyValue))
+                {
+                    if (i == _primaryKeyProperties.Count - 1)
+                        return true;
+                }
+                else break;
+            }
+
+            return false;
         }
 
         public async Task Update(T entity)

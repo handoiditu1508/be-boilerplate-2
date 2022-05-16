@@ -22,7 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System;
 using System.Text;
 
 namespace Hamburger.Api
@@ -54,12 +54,6 @@ namespace Hamburger.Api
                     });
             });
 
-            // Model State Validation
-            /*services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });*/
-
             // Auto Mapper
             services.AddAutoMapper(typeof(UserMapperProfile));
 
@@ -70,6 +64,16 @@ namespace Hamburger.Api
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 8;
+                options.Password.RequiredUniqueChars = 1;
+            });
 
             // Add Authentication
             services.AddAuthentication(options =>
@@ -111,7 +115,8 @@ namespace Hamburger.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoginSessionRepository, LoginSessionRepository>();
 
-            services.AddControllers().AddNewtonsoftJson(options => {
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 //options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 //options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -119,6 +124,24 @@ namespace Hamburger.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hamburger.Api", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    Name = "Authorization"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
             });
         }
 

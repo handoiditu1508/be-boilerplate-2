@@ -61,7 +61,7 @@ namespace Hamburger.Services.UserService
 
         private async Task DeleteLoginSessions(IEnumerable<Guid> loginSessionIds)
         {
-            await _loginSessionRepository.RemoveMany(loginSessionIds.Select(id => new Guid[] { id }));
+            await _loginSessionRepository.RemoveManyCompositeKeys(loginSessionIds.Select(id => new Guid[] { id }));
         }
 
         private string GenerateRefreshToken() => Guid.NewGuid().ToString();

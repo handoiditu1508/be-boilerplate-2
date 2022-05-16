@@ -87,7 +87,7 @@ namespace Hamburger.Repository.Abstraction
         /// Remove many entities from table which has more than 1 primary key.
         /// </summary>
         /// <param name="listCompositeIds">List of composite keys whose entities will be deleted.</param>
-        Task RemoveMany(IEnumerable<IEnumerable<object>> listCompositeIds);
+        Task RemoveManyCompositeKeys<U>(IEnumerable<IEnumerable<U>> listCompositeIds);
 
         /// <summary>
         /// Update an entity by It's key(s).

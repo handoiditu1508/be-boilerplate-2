@@ -312,18 +312,20 @@ namespace Hamburger.Repository.Dapper
             }
         }
 
-        public async Task RemoveMany(IEnumerable<IEnumerable<object>> listCompositeIds)
+        public async Task RemoveManyCompositeKeys<U>(IEnumerable<IEnumerable<U>> listCompositeIds)
         {
             using (var connection = GetDbConnection())
             {
                 if (connection.State == ConnectionState.Closed)
                     await connection.OpenAsync();
 
+                var listCompositeIds2 = listCompositeIds.Select(ids => ids.Cast<object>());
+
                 if (typeof(ISoftDelete).IsAssignableFrom(typeof(T)))
                 {
-                    await connection.BulkSoftDelete(_tableName, _primaryKeys, listCompositeIds);
+                    await connection.BulkSoftDelete(_tableName, _primaryKeys, listCompositeIds2);
                 }
-                else await connection.BulkDelete(_tableName, _primaryKeys, listCompositeIds);
+                else await connection.BulkDelete(_tableName, _primaryKeys, listCompositeIds2);
 
                 if (connection.State == ConnectionState.Open)
                     await connection.CloseAsync();
