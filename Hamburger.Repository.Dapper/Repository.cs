@@ -118,7 +118,7 @@ namespace Hamburger.Repository.Dapper
             }
         }
 
-        public async Task<int> ExecuteQuery(string sql, object? param = null)
+        public async Task<int> ExecuteQuery(string sql, object param = null)
         {
             int result;
 
@@ -136,7 +136,7 @@ namespace Hamburger.Repository.Dapper
             return result;
         }
 
-        public async Task ExecuteQueryWithTransaction(string sql, object? param = null)
+        public async Task ExecuteQueryWithTransaction(string sql, object param = null)
         {
             using (var connection = GetDbConnection())
             {
@@ -162,7 +162,7 @@ namespace Hamburger.Repository.Dapper
             }
         }
 
-        public async Task<U> ExecuteScalar<U>(string sql, object? param = null)
+        public async Task<U> ExecuteScalar<U>(string sql, object param = null)
         {
             U result;
 
@@ -183,7 +183,7 @@ namespace Hamburger.Repository.Dapper
             return result;
         }
 
-        public async Task<U> ExecuteStoredProcedure<U>(string storedProcedure, object? param = null)
+        public async Task<U> ExecuteStoredProcedure<U>(string storedProcedure, object param = null)
         {
             IEnumerable<object> result;
 
@@ -250,12 +250,12 @@ namespace Hamburger.Repository.Dapper
             return result;
         }
 
-        public async Task<IEnumerable<T>> Get(string sql, object? param = null)
+        public async Task<IEnumerable<T>> Get(string sql, object param = null)
         {
             return await Get<T>(sql, param);
         }
 
-        public async Task<IEnumerable<U>> Get<U>(string sql, object? param = null)
+        public async Task<IEnumerable<U>> Get<U>(string sql, object param = null)
         {
             IEnumerable<U> result;
 

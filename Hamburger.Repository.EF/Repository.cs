@@ -62,7 +62,7 @@ namespace Hamburger.Repository.EF
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> ExecuteQuery(string sql, object? param = null)
+        public async Task<int> ExecuteQuery(string sql, object param = null)
         {
             int result;
 
@@ -80,7 +80,7 @@ namespace Hamburger.Repository.EF
             return result;
         }
 
-        public async Task ExecuteQueryWithTransaction(string sql, object? param = null)
+        public async Task ExecuteQueryWithTransaction(string sql, object param = null)
         {
             using (var connection = _context.Database.GetDbConnection())
             {
@@ -106,7 +106,7 @@ namespace Hamburger.Repository.EF
             }
         }
 
-        public async Task<U> ExecuteScalar<U>(string sql, object? param = null)
+        public async Task<U> ExecuteScalar<U>(string sql, object param = null)
         {
             U result;
 
@@ -127,7 +127,7 @@ namespace Hamburger.Repository.EF
             return result;
         }
 
-        public async Task<U> ExecuteStoredProcedure<U>(string storedProcedure, object? param = null)
+        public async Task<U> ExecuteStoredProcedure<U>(string storedProcedure, object param = null)
         {
             IEnumerable<object> result;
 
@@ -160,12 +160,12 @@ namespace Hamburger.Repository.EF
             return await _context.Set<T>().FindAsync(compositeIds);
         }
 
-        public async Task<IEnumerable<T>> Get(string sql, object? param = null)
+        public async Task<IEnumerable<T>> Get(string sql, object param = null)
         {
             return await Get<T>(sql, param);
         }
 
-        public async Task<IEnumerable<U>> Get<U>(string sql, object? param = null)
+        public async Task<IEnumerable<U>> Get<U>(string sql, object param = null)
         {
             IEnumerable<U> result;
 
@@ -185,8 +185,15 @@ namespace Hamburger.Repository.EF
 
         protected void SetKeysForEntity(T entity, IEnumerable<object> keyValues)
         {
-            if (_primaryKeyProperties.Count() > keyValues.Count())
+            if (_primaryKeyProperties.Count > keyValues.Count())
                 throw CustomException.Database.NotProvidedEnoughValues;
+
+            // entity has single key property
+            if (_primaryKeyProperties.Count == 1)
+            {
+                _primaryKeyProperty.SetValue(entity, keyValues.First());
+                return;
+            }
 
             var valuesList = keyValues.ToList();
 
@@ -233,7 +240,6 @@ namespace Hamburger.Repository.EF
             if (entry != null)
             {
                 entity = entry.Entity;
-                _context.Remove(entity);
             }
             else
             {
@@ -242,8 +248,8 @@ namespace Hamburger.Repository.EF
                 SetKeysForEntity(entity, compositeIds);
 
                 _context.Attach(entity);
-                _context.Remove(entity);
             }
+            _context.Remove(entity);
         }
 
         private bool CheckEntityMatchIds(T entity, params object[] compositeIds)

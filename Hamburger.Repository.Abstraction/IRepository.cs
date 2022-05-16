@@ -24,14 +24,14 @@ namespace Hamburger.Repository.Abstraction
         /// <param name="sql">The SQL to execute for this query.</param>
         /// <param name="param">The parameters to use for this query.</param>
         /// <returns>The number of rows affected.</returns>
-        Task<int> ExecuteQuery(string sql, object? param = null);
+        Task<int> ExecuteQuery(string sql, object param = null);
 
         /// <summary>
         /// Execute a command in a transaction, if an error happen before the command is finished, then changes won't be saved.
         /// </summary>
         /// <param name="sql">The SQL to execute for this query.</param>
         /// <param name="param">The parameters to use for this query.</param>
-        Task ExecuteQueryWithTransaction(string sql, object? param = null);
+        Task ExecuteQueryWithTransaction(string sql, object param = null);
 
         /// <summary>
         /// Execute parameterized SQL that selects a single value.
@@ -40,7 +40,7 @@ namespace Hamburger.Repository.Abstraction
         /// <param name="sql">The SQL to execute.</param>
         /// <param name="param">The parameters to use for this command.</param>
         /// <returns>The first cell returned, as U.</returns>
-        Task<U> ExecuteScalar<U>(string sql, object? param = null);
+        Task<U> ExecuteScalar<U>(string sql, object param = null);
 
         /// <summary>
         /// Get all records of the table.
@@ -61,7 +61,7 @@ namespace Hamburger.Repository.Abstraction
         /// <param name="sql">The SQL to execute for this query.</param>
         /// <param name="param">The parameters to use for this query.</param>
         /// <returns>A sequence of data of T.</returns>
-        Task<IEnumerable<T>> Get(string sql, object? param = null);
+        Task<IEnumerable<T>> Get(string sql, object param = null);
 
         /// <summary>
         /// Retrieve data by executing a query.
@@ -69,7 +69,7 @@ namespace Hamburger.Repository.Abstraction
         /// <typeparam name="U">The type of results to return.</typeparam>
         /// <param name="sql">The SQL to execute for the query.</param>
         /// <param name="param">The parameters to pass, if any.</param>
-        Task<IEnumerable<U>> Get<U>(string sql, object? param = null);
+        Task<IEnumerable<U>> Get<U>(string sql, object param = null);
 
         /// <summary>
         /// Delete an entity from table.
@@ -108,6 +108,6 @@ namespace Hamburger.Repository.Abstraction
         /// <param name="storedProcedure">The SQL to execute for the query.</param>
         /// <param name="param">The parameters to pass, if any.</param>
         /// <returns>A object of T.</returns>
-        Task<U> ExecuteStoredProcedure<U>(string storedProcedure, object? param = null);
+        Task<U> ExecuteStoredProcedure<U>(string storedProcedure, object param = null);
     }
 }
