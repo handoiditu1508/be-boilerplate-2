@@ -75,18 +75,18 @@ namespace Hamburger.Services.UserService
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            // add claims for role claims
+            // add authorization claims
             var claims = new List<Claim>();
-            var tasks = roles.Select(async role =>
+            roles.ForEach(async role =>
             {
+                // add claims for roles
+                authClaims.Add(new Claim(ClaimTypes.Role, role.Name));
+
+                // add claims for role claims
                 var roleClaims = await _roleManager.GetClaimsAsync(role);
                 claims.AddRange(roleClaims);
             });
-            await Task.WhenAll(tasks);
             authClaims.AddRange(claims.Distinct(new ClaimComparer()));
-
-            // add claims for roles
-            roles.ForEach(role => authClaims.Add(new Claim(ClaimTypes.Role, role.Name)));
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.Jwt.Secret));
 
