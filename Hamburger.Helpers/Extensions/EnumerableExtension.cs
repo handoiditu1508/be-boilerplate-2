@@ -36,6 +36,7 @@ namespace Hamburger.Helpers.Extensions
 
         /// <summary>
         /// Performs the specified action on each element of the IEnumerable.
+        /// Warning: do not pass async action to this function since action will run it synchonously.
         /// </summary>
         /// <typeparam name="T">The type of objects to enumerate.</typeparam>
         /// <param name="enumeration">List of T.</param>

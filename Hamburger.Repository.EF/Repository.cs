@@ -51,14 +51,14 @@ namespace Hamburger.Repository.EF
 
         public async Task<T> Add(T entity)
         {
-            var result = await _context.AddAsync(entity);
+            var result = _context.Add(entity);
             await _context.SaveChangesAsync();
             return result.Entity;
         }
 
         public async Task AddMany(IEnumerable<T> entities)
         {
-            await _context.AddRangeAsync(entities);
+            _context.AddRange(entities);
             await _context.SaveChangesAsync();
         }
 
@@ -224,7 +224,7 @@ namespace Hamburger.Repository.EF
         {
             foreach (var compositeIds in listCompositeIds)
             {
-                UpdateEntityStateAsRemoved(compositeIds.ToArray());
+                UpdateEntityStateAsRemoved(compositeIds.Cast<object>().ToArray());
             }
 
             await _context.SaveChangesAsync();

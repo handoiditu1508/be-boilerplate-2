@@ -77,7 +77,7 @@ namespace Hamburger.Services.UserService
 
             // add authorization claims
             var claims = new List<Claim>();
-            roles.ForEach(async role =>
+            foreach (var role in roles)
             {
                 // add claims for roles
                 authClaims.Add(new Claim(ClaimTypes.Role, role.Name));
@@ -85,7 +85,7 @@ namespace Hamburger.Services.UserService
                 // add claims for role claims
                 var roleClaims = await _roleManager.GetClaimsAsync(role);
                 claims.AddRange(roleClaims);
-            });
+            }
             authClaims.AddRange(claims.Distinct(new ClaimComparer()));
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.Jwt.Secret));
@@ -124,7 +124,7 @@ namespace Hamburger.Services.UserService
 
             // delete outdate refresh token
             if (!refreshTokens.IsNullOrEmpty())
-                await DeleteLoginSessions(refreshTokens.Where(t => t.ExpirationDate <= DateTime.UtcNow).Select(t => t.Id));
+                await DeleteLoginSessions(refreshTokens.Where(t => t.ExpirationDate <= DateTime.UtcNow || t.UserAgent == userAgent).Select(t => t.Id));
 
             var result = new LoginResponse
             {

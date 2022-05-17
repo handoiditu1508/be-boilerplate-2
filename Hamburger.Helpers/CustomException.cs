@@ -27,6 +27,7 @@ namespace Hamburger.Helpers
         {
             public static CustomException UnexpectedError(string message = "") => new(EnumExceptionGroup.System, "SYSTEM_001", $"Unexpected error{(!message.IsNullOrWhiteSpace() ? $": {message}" : "")}.");
             public static CustomException InvalidTimeZoneId(string timeZoneId) => new(EnumExceptionGroup.System, "SYSTEM_002", $"Time zone id \"{timeZoneId}\" not found.");
+            public static CustomException Notification(string message) => new(EnumExceptionGroup.System, "SYSTEM_003", message);
         }
 
         public static class Validation
