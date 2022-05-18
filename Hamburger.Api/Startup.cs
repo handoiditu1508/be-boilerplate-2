@@ -23,6 +23,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Hamburger.Api
@@ -121,10 +123,10 @@ namespace Hamburger.Api
                 //options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 //options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Hamburger.Api", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Hamburger.Api", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Type = SecuritySchemeType.ApiKey,
                     In = ParameterLocation.Header,
@@ -132,7 +134,7 @@ namespace Hamburger.Api
                     BearerFormat = "JWT",
                     Name = "Authorization"
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
@@ -142,6 +144,11 @@ namespace Hamburger.Api
                         Array.Empty<string>()
                     }
                 });
+
+                // Add support for swagger endpoint description
+                // https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
         }
 

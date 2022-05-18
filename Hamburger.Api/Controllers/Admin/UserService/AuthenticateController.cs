@@ -30,16 +30,23 @@ namespace Hamburger.Api.Controllers.Admin.UserService
         /// <summary>
         /// Register user to specific roles.
         /// </summary>
-        /// <param name="firstName">First name.</param>
-        /// <param name="middleName">Middle name.</param>
-        /// <param name="lastName">Last name.</param>
-        /// <param name="username">Username.</param>
-        /// <param name="email">Email address.</param>
-        /// <param name="password">Password.</param>
-        /// <param name="phoneNumber">Phone number.</param>
-        /// <param name="roles">List of roles registered for users.</param>
-        /// <param name="userAgent">Get from "User-Agent" header to create refresh token, not required.</param>
         /// <returns>Json Web Token.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "firstName": "John",// First name.
+        ///        "middleName": "Test",// Middle name.
+        ///        "lastName": "Doe",// Last name.
+        ///        "username": "user1",// Username.
+        ///        "email": "user1@example.com",// Email address.
+        ///        "password": "********",// Password.
+        ///        "phoneNumber": "0987654321",// Phone number.
+        ///        "roles": ["Admin", "User"],// List of roles registered for users.
+        ///        "userAgent": "string"// Get from "User-Agent" header to create refresh token, not required.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         [Route(nameof(Register))]
         [Authorize(PermissionClaimPolicies.AdminCreateUsers)]
@@ -64,16 +71,23 @@ namespace Hamburger.Api.Controllers.Admin.UserService
         /// <summary>
         /// Register user to admin role.
         /// </summary>
-        /// <param name="firstName">First name.</param>
-        /// <param name="middleName">Middle name.</param>
-        /// <param name="lastName">Last name.</param>
-        /// <param name="username">Username.</param>
-        /// <param name="email">Email address.</param>
-        /// <param name="password">Password.</param>
-        /// <param name="phoneNumber">Phone number.</param>
-        /// <param name="roles">List of roles registered for users, not required</param>
-        /// <param name="userAgent">Get from "User-Agent" header to create refresh token, not required.</param>
         /// <returns>Json Web Token.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "firstName": "John",// First name.
+        ///        "middleName": "Test",// Middle name.
+        ///        "lastName": "Doe",// Last name.
+        ///        "username": "user1",// Username.
+        ///        "email": "user1@example.com",// Email address.
+        ///        "password": "********",// Password.
+        ///        "phoneNumber": "0987654321",// Phone number.
+        ///        "roles": ["Admin", "User"],// List of roles registered for users, not required.
+        ///        "userAgent": "string"// Get from "User-Agent" header to create refresh token, not required.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         [Route(nameof(RegisterAdmin))]
         [Authorize(PermissionClaimPolicies.AdminCreateUsers)]

@@ -52,10 +52,17 @@ namespace Hamburger.Api.Controllers.UserService
         /// <summary>
         /// Update user information.
         /// </summary>
-        /// <param name="id">Will get from claim, not required.</param>
-        /// <param name="firstName">New first name.</param>
-        /// <param name="middleName">New middle name.</param>
-        /// <param name="lastName">New last name.</param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "id": 1,// Will get from claim, not required.
+        ///        "firstName": "John",// New first name.
+        ///        "middleName": "Test",// New middle name.
+        ///        "lastName": "Doe"// New last name.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPut]
         [Authorize(PermissionClaimPolicies.UpdateUsers)]
         [ProducesResponseType(StatusCodes.Status200OK)]

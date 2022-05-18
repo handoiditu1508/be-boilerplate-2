@@ -2,7 +2,7 @@
 {
     public class LogoutRequest
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public string RefreshToken { get; set; }
     }
 }

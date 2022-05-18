@@ -56,23 +56,30 @@ namespace Hamburger.Api.Controllers.Admin.UserService
         /// <summary>
         /// Filter list user.
         /// </summary>
-        /// <param name="id">User id.</param>
-        /// <param name="userName">Username</param>
-        /// <param name="email">Email.</param>
-        /// <param name="emailConfirmed">true, false or null.</param>
-        /// <param name="phoneNumber">Phone number.</param>
-        /// <param name="phoneNumberConfirmed">true, false or null.</param>
-        /// <param name="twoFactorEnabled">true, false or null.</param>
-        /// <param name="isLockout">true, false or null.</param>
-        /// <param name="lockoutEnabled">true, false or null.</param>
-        /// <param name="accessFailedCount">Access failed count.</param>
-        /// <param name="accessFailedCountOperator">0 - lesser than, 1 - equal to, 2 - greater than.</param>
-        /// <param name="name">Search by FirstName, MiddleName or LastName.</param>
-        /// <param name="createdDate">Created Date.</param>
-        /// <param name="modifiedDate">Modified Date.</param>
-        /// <param name="limit">Page maximum items.</param>
-        /// <param name="offset">Skip number of items.</param>
         /// <returns>Array of UserViewModel.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "id": 1,// User id.
+        ///        "userName: "user1",// Username.
+        ///        "email": "user1@example.com",// Email.
+        ///        "emailConfirmed": true,// true, false or null.
+        ///        "phoneNumber": "0987654321",// Phone number.
+        ///        "phoneNumberConfirmed": true,// true, false or null.
+        ///        "twoFactorEnabled": true,// true, false or null.
+        ///        "isLockout": true,// true, false or null.
+        ///        "lockoutEnabled": true,// true, false or null.
+        ///        "accessFailedCount": 0,// Access failed count.
+        ///        "accessFailedCountOperator": 0,// 0 - lesser than, 1 - equal to, 2 - greater than.
+        ///        "name": "John",// Search by FirstName, MiddleName or LastName.
+        ///        "createdDate": "1989-06-30",// Created Date.
+        ///        "modifiedDate": "1989-06-30",// Modified Date.
+        ///        "limit": 10,// Page's maximum items.
+        ///        "offset": 20// Skip number of items.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         [Route(nameof(FilterUser))]
         [Authorize(PermissionClaimPolicies.AdminViewUsers)]
@@ -98,18 +105,28 @@ namespace Hamburger.Api.Controllers.Admin.UserService
         /// Update user information.
         /// </summary>
         /// <param name="id">Id of user to update.</param>
-        /// <param name="firstName">New first name.</param>
-        /// <param name="middleName">New middle name.</param>
-        /// <param name="lastName">New last name.</param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "id": 1,// Id of user to update, will get from url, not required.
+        ///        "firstName: "John",// New first name.
+        ///        "middleName": "Test",// New middle name.
+        ///        "lastName": "Doe"// New last name.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPut]
+        [Route("{id}")]
         [Authorize(PermissionClaimPolicies.AdminUpdateUsers)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(SimpleError), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(UserUpdateRequest request)
+        public async Task<IActionResult> Update(int id, UserUpdateRequest request)
         {
             try
             {
+                request.Id = id;
                 await _userService.UpdateUser(request);
                 return Ok();
             }

@@ -421,14 +421,14 @@ namespace Hamburger.Services.UserService
 
         public async Task Logout(LogoutRequest request)
         {
-            if (request.UserId < 1)
-                throw CustomException.Validation.PropertyIsInvalid(nameof(request.UserId));
+            if (request.Id < 1)
+                throw CustomException.Validation.PropertyIsInvalid(nameof(request.Id));
 
             if (request.RefreshToken.IsNullOrWhiteSpace())
                 throw CustomException.Validation.PropertyIsNullOrEmpty(nameof(request.RefreshToken));
 
             // get all user's refresh tokens in database
-            var refreshTokens = await _loginSessionRepository.GetUserLoginSessions(request.UserId);
+            var refreshTokens = await _loginSessionRepository.GetUserLoginSessions(request.Id);
 
             // get all outdated refresh token's Id and target refresh token's Id
             var idsToRemove = refreshTokens

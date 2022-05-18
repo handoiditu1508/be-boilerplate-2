@@ -30,10 +30,17 @@ namespace Hamburger.Api.Controllers.UserService
         /// <summary>
         /// Login.
         /// </summary>
-        /// <param name="username">Username.</param>
-        /// <param name="password">Password.</param>
-        /// <param name="userAgent">Get from "User-Agent" header to create refresh token, not required.</param>
         /// <returns>Json Web Token.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "username": "user1",// Username.
+        ///        "password": "********",// Password.
+        ///        "userAgent": "string"// Get from "User-Agent" header to create refresh token, not required.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         [Route(nameof(Login))]
         [AllowAnonymous]
@@ -63,16 +70,23 @@ namespace Hamburger.Api.Controllers.UserService
         /// <summary>
         /// Register user to user role.
         /// </summary>
-        /// <param name="firstName">First name.</param>
-        /// <param name="middleName">Middle name.</param>
-        /// <param name="lastName">Last name.</param>
-        /// <param name="username">Username.</param>
-        /// <param name="email">Email address.</param>
-        /// <param name="password">Password.</param>
-        /// <param name="phoneNumber">Phone number.</param>
-        /// <param name="roles">List of roles registered for users, not required.</param>
-        /// <param name="userAgent">Get from "User-Agent" header to create refresh token, not required.</param>
         /// <returns>Json Web Token.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "firstName": "John",// First name.
+        ///        "middleName": "Test",// Middle name.
+        ///        "lastName": "Doe",// Last name.
+        ///        "username": "user1",// Username.
+        ///        "email": "user1@example.com",// Email address.
+        ///        "password": "********",// Password.
+        ///        "phoneNumber": "0987654321",// Phone number.
+        ///        "roles": ["Admin", "User"],// List of roles registered for users, not required.
+        ///        "userAgent": "string"// Get from "User-Agent" header to create refresh token, not required.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         [Route(nameof(RegisterUser))]
         [AllowAnonymous]
@@ -96,10 +110,17 @@ namespace Hamburger.Api.Controllers.UserService
         /// <summary>
         /// Refresh JWT.
         /// </summary>
-        /// <param name="accessToken">Outdated access token.</param>
-        /// <param name="refreshToken">Refresh token.</param>
-        /// <param name="userAgent">Get from "User-Agent" header to create refresh token, not required.</param>
         /// <returns>Json Web Token.</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "accessToken": "string",// Outdated access token.
+        ///        "refreshToken": "string",// Refresh token.
+        ///        "userAgent": "string"// Get from "User-Agent" header to create refresh token, not required.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         [Route(nameof(RefreshToken))]
         [AllowAnonymous]
@@ -129,8 +150,15 @@ namespace Hamburger.Api.Controllers.UserService
         /// <summary>
         /// Delete user's login session in database.
         /// </summary>
-        /// <param name="userId">Will get from claim, not required.</param>
-        /// <param name="refreshToken">Refresh token.</param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "id": 1,// User Id will get from claim, not required.
+        ///        "refreshToken": "string"// Refresh token.
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         [Route(nameof(Logout))]
         [Authorize]
@@ -141,7 +169,7 @@ namespace Hamburger.Api.Controllers.UserService
         {
             try
             {
-                request.UserId = UserId;
+                request.Id = UserId;
                 await _userService.Logout(request);
                 return Ok();
             }
