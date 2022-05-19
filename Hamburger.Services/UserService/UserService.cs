@@ -269,7 +269,6 @@ namespace Hamburger.Services.UserService
             // create new user
             ReformatRegisterRequest(request);
             user = _mapper.Map<User>(request);
-            user.SecurityStamp = Guid.NewGuid().ToString();
 
             var registerResult = await _userManager.CreateAsync(user, request.Password);
             if (!registerResult.Succeeded)
