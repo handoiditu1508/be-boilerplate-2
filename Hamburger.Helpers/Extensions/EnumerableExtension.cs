@@ -35,21 +35,6 @@ namespace Hamburger.Helpers.Extensions
         }
 
         /// <summary>
-        /// Performs the specified action on each element of the IEnumerable.
-        /// Warning: do not pass async action to this function since action will run it synchonously.
-        /// </summary>
-        /// <typeparam name="T">The type of objects to enumerate.</typeparam>
-        /// <param name="enumeration">List of T.</param>
-        /// <param name="action">The Action delegate to perform on each element of the IEnumerable.</param>
-        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
-        {
-            foreach (var item in enumeration)
-            {
-                action(item);
-            }
-        }
-
-        /// <summary>
         /// Indicates whether the specified enumeration is null or an empty enumeration ([]).
         /// </summary>
         /// <typeparam name="T">Type of enumeration.</typeparam>

@@ -51,13 +51,6 @@ namespace Hamburger.Repository.EF
         }
 
         #region Override SaveChanges
-        public override int SaveChanges()
-        {
-            HandleEntitiesChanges(ChangeTracker.Entries());
-
-            return base.SaveChanges();
-        }
-
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             HandleEntitiesChanges(ChangeTracker.Entries());
@@ -70,13 +63,6 @@ namespace Hamburger.Repository.EF
             HandleEntitiesChanges(ChangeTracker.Entries());
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            HandleEntitiesChanges(ChangeTracker.Entries());
-
-            return base.SaveChangesAsync(cancellationToken);
         }
         #endregion
 
