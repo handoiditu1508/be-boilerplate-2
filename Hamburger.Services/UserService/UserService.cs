@@ -124,7 +124,7 @@ namespace Hamburger.Services.UserService
 
             // delete outdate refresh token
             if (!refreshTokens.IsNullOrEmpty())
-                await DeleteLoginSessions(refreshTokens.Where(t => t.ExpirationDate <= DateTime.UtcNow || t.UserAgent == userAgent).Select(t => t.Id));
+                await DeleteLoginSessions(refreshTokens.Where(t => t.ExpirationDate <= DateTime.UtcNow).Select(t => t.Id));
 
             var result = new LoginResponse
             {
