@@ -33,7 +33,7 @@ namespace Hamburger.Repository.EF.Repositories
                 users = users.Skip(filterModel.Offset.Value);
             }
 
-            if (filterModel.Limit.HasValue && filterModel.Limit > -1)
+            if (filterModel.Limit.HasValue && filterModel.Limit > 0)
             {
                 users = users.Take(filterModel.Limit.Value);
             }

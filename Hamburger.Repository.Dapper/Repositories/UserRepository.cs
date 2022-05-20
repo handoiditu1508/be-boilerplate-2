@@ -47,7 +47,7 @@ namespace Hamburger.Repository.Dapper.Repositories
             }
             else sql += " OFFSET 0 ROWS";
 
-            if (filterModel.Limit.HasValue && filterModel.Limit > -1)
+            if (filterModel.Limit.HasValue && filterModel.Limit > 0)
             {
                 sql += $" FETCH NEXT {filterModel.Limit} ROWS ONLY";
             }
