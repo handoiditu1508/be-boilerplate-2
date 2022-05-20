@@ -49,20 +49,20 @@ namespace Hamburger.Repository.EF
             _tableName = entityType.GetTableName();
         }
 
-        public async Task<T> Add(T entity)
+        public virtual async Task<T> Add(T entity)
         {
             var result = _context.Add(entity);
             await _context.SaveChangesAsync();
             return result.Entity;
         }
 
-        public async Task AddMany(IEnumerable<T> entities)
+        public virtual async Task AddMany(IEnumerable<T> entities)
         {
             _context.AddRange(entities);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> ExecuteQuery(string sql, object param = null)
+        public virtual async Task<int> ExecuteQuery(string sql, object param = null)
         {
             int result;
 
@@ -80,7 +80,7 @@ namespace Hamburger.Repository.EF
             return result;
         }
 
-        public async Task ExecuteQueryWithTransaction(string sql, object param = null)
+        public virtual async Task ExecuteQueryWithTransaction(string sql, object param = null)
         {
             using (var connection = _context.Database.GetDbConnection())
             {
@@ -106,7 +106,7 @@ namespace Hamburger.Repository.EF
             }
         }
 
-        public async Task<U> ExecuteScalar<U>(string sql, object param = null)
+        public virtual async Task<U> ExecuteScalar<U>(string sql, object param = null)
         {
             U result;
 
@@ -127,7 +127,7 @@ namespace Hamburger.Repository.EF
             return result;
         }
 
-        public async Task<U> ExecuteStoredProcedure<U>(string storedProcedure, object param = null)
+        public virtual async Task<U> ExecuteStoredProcedure<U>(string storedProcedure, object param = null)
         {
             IEnumerable<object> result;
 
@@ -147,12 +147,12 @@ namespace Hamburger.Repository.EF
             return (U)result.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<T>> Get()
+        public virtual async Task<IEnumerable<T>> Get()
         {
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> Get(params object[] compositeIds)
+        public virtual async Task<T> Get(params object[] compositeIds)
         {
             if (compositeIds.IsNullOrEmpty())
                 throw CustomException.Validation.PropertyIsNullOrEmpty(nameof(compositeIds));
@@ -160,12 +160,12 @@ namespace Hamburger.Repository.EF
             return await _context.Set<T>().FindAsync(compositeIds);
         }
 
-        public async Task<IEnumerable<T>> Get(string sql, object param = null)
+        public virtual async Task<IEnumerable<T>> Get(string sql, object param = null)
         {
             return await Get<T>(sql, param);
         }
 
-        public async Task<IEnumerable<U>> Get<U>(string sql, object param = null)
+        public virtual async Task<IEnumerable<U>> Get<U>(string sql, object param = null)
         {
             IEnumerable<U> result;
 
@@ -203,14 +203,17 @@ namespace Hamburger.Repository.EF
             }
         }
 
-        public async Task Remove(params object[] compositeIds)
+        public virtual async Task Remove(params object[] compositeIds)
         {
+            if (compositeIds.IsNullOrEmpty())
+                throw CustomException.Validation.PropertyIsNullOrEmpty(nameof(compositeIds));
+
             UpdateEntityStateAsRemoved(compositeIds);
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveMany(IEnumerable<object> ids)
+        public virtual async Task RemoveMany(IEnumerable<object> ids)
         {
             foreach (var id in ids)
             {
@@ -220,7 +223,7 @@ namespace Hamburger.Repository.EF
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveManyCompositeKeys<U>(IEnumerable<IEnumerable<U>> listCompositeIds)
+        public virtual async Task RemoveManyCompositeKeys<U>(IEnumerable<IEnumerable<U>> listCompositeIds)
         {
             foreach (var compositeIds in listCompositeIds)
             {
@@ -270,13 +273,13 @@ namespace Hamburger.Repository.EF
             return false;
         }
 
-        public async Task Update(T entity)
+        public virtual async Task Update(T entity)
         {
             _context.Update(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateMany(IEnumerable<T> entities)
+        public virtual async Task UpdateMany(IEnumerable<T> entities)
         {
             _context.UpdateRange(entities);
             await _context.SaveChangesAsync();

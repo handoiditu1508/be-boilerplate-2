@@ -135,5 +135,31 @@ namespace Hamburger.Repository.EF.Repositories
 
             return users;
         }
+
+        public override async Task Remove(params object[] compositeIds)
+        {
+            // Need User.ConcurrencyStamp to soft delete (update) user
+            await _context.Users.FindAsync(compositeIds);
+
+            await base.Remove(compositeIds);
+        }
+
+        public override async Task RemoveMany(IEnumerable<object> ids)
+        {
+            // Need User.ConcurrencyStamp to soft delete (update) user
+            await _context.Users.Where(u => ids.Contains(u.Id)).ToListAsync();
+
+            await base.RemoveMany(ids);
+        }
+
+        public override async Task RemoveManyCompositeKeys<U>(IEnumerable<IEnumerable<U>> listCompositeIds)
+        {
+            var ids = listCompositeIds.Select(compositeIds => (int)(object)compositeIds.First());
+
+            // Need User.ConcurrencyStamp to soft delete (update) user
+            await _context.Users.Where(u => ids.Contains(u.Id)).ToListAsync();
+
+            await base.RemoveManyCompositeKeys(listCompositeIds);
+        }
     }
 }

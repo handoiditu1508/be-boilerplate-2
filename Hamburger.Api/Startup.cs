@@ -60,7 +60,7 @@ namespace Hamburger.Api
             services.AddAutoMapper(typeof(UserMapperProfile));
 
             // Entity Framework
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=AppApi;integrated security=true;Trusted_Connection=True"));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(AppSettings.Database.ConnectionString));
 
             // For Identity
             services.AddIdentity<User, Role>()
