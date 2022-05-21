@@ -16,22 +16,20 @@ namespace Hamburger.Helpers.Extensions
         public static SimpleError ToSimpleError(this Exception exception)
         {
             SimpleError error;
+            CustomException customException;
 
             if (exception.GetType() == typeof(CustomException))
             {
-                var customException = (CustomException)exception;
-                error = new SimpleError
-                {
-                    Code = customException.Code,
-                    Message = customException.Message,
-                    Group = customException.Group
-                };
+                customException = (CustomException)exception;
             }
-            else
+            else customException = CustomException.System.UnexpectedError();
+
+            error = new SimpleError
             {
-                var customException = CustomException.System.UnexpectedError();
-                error = customException.ToSimpleError();
-            }
+                Code = customException.Code,
+                Message = customException.Message,
+                Group = customException.Group
+            };
 
             return error;
         }

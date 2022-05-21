@@ -17,7 +17,7 @@ namespace Hamburger.Helpers
             IDateTimeZoneProvider timeZoneProvider = DateTimeZoneProviders.Tzdb;
 
             if (timeZoneProvider.Ids.Any(s => s != timeZoneId))
-                throw CustomException.System.InvalidTimeZoneId(timeZoneId);
+                throw CustomException.Authenticate.InvalidTimeZoneId(timeZoneId);
 
             DateTimeZone tzUtc = timeZoneProvider["UTC"];
             DateTimeZone tzDestination = timeZoneProvider[timeZoneId];

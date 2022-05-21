@@ -26,8 +26,7 @@ namespace Hamburger.Helpers
         public static class System
         {
             public static CustomException UnexpectedError(string message = "") => new(EnumExceptionGroup.System, "SYSTEM_001", $"Unexpected error{(!message.IsNullOrWhiteSpace() ? $": {message}" : "")}.");
-            public static CustomException InvalidTimeZoneId(string timeZoneId) => new(EnumExceptionGroup.System, "SYSTEM_002", $"Time zone id \"{timeZoneId}\" not found.");
-            public static CustomException Notification(string message) => new(EnumExceptionGroup.System, "SYSTEM_003", message);
+            public static CustomException Notification(string message) => new(EnumExceptionGroup.System, "SYSTEM_002", message);
         }
 
         public static class Validation
@@ -51,6 +50,7 @@ namespace Hamburger.Helpers
             public static CustomException AddRolesFailed(string additionalInfo = "") => new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_006", $"Unable to add roles." + (!additionalInfo.IsNullOrWhiteSpace() ? $" {additionalInfo}." : ""));
             public static readonly CustomException InvalidAccessToken = new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_007", "Access token is invalid.");
             public static readonly CustomException LoginSessionExpired = new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_008", "Login Session Expired.");
+            public static CustomException InvalidTimeZoneId(string timeZoneId) => new(EnumExceptionGroup.Authenticate, "Authenticate_009", $"Time zone id \"{timeZoneId}\" not found.");
         }
     }
 }
