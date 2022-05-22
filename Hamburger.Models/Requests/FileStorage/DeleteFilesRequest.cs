@@ -4,6 +4,6 @@ namespace Hamburger.Models.Requests.FileStorage
 {
     public class DeleteFilesRequest
     {
-        public IEnumerable<string> Paths { get; set; }
+        public IEnumerable<DeleteFileRequest> Files { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Hamburger.Services.Abstractions.FileStorage
     {
         Task<string> UploadFile(UploadFileRequest request);
         Task<IEnumerable<string>> UploadFiles(UploadFilesRequest request);
-        Task DeleteFile(string path);
+        Task DeleteFile(string path, bool? isFile = null);
         Task DeleteFiles(DeleteFilesRequest request);
     }
 }

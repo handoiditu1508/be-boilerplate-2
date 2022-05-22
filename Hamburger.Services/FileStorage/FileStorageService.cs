@@ -22,7 +22,7 @@ namespace Hamburger.Services.FileStorage
 
         public async Task<string> UploadFile(UploadFileRequest request)
         {
-            await _httpHelper.Post("/StoreFile", request);
+            await _httpHelper.Post("/", request);
 
             return Path.Combine(AppSettings.FileStorage.BaseUrl, request.DestinationFolder, request.FileContent.FileName);
         }
@@ -34,8 +34,13 @@ namespace Hamburger.Services.FileStorage
             return request.FileContents.Select(f => Path.Combine(AppSettings.FileStorage.BaseUrl, request.DestinationFolder, f.FileName));
         }
 
-        public async Task DeleteFile(string path)
+        public async Task DeleteFile(string path, bool? isFile = null)
         {
+            if (isFile != null)
+            {
+                path += "?isFile=" + isFile.Value;
+            }
+
             await _httpHelper.Delete(path);
         }
 
