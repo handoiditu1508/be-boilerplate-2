@@ -3,7 +3,6 @@ using Hamburger.Helpers.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,20 +58,15 @@ namespace Hamburger.Helpers
 
         public async Task ValidateImage(IFormFile image)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                await image.CopyToAsync(memoryStream);
+            var data = await image.GetBytes();
+            var contentType = image.ContentType;
 
-                var data = memoryStream.ToArray();
-                var contentType = image.ContentType;
+            if (!IsImage(data, contentType))
+                throw CustomException.Validation.InvalidImage;
 
-                if (!IsImage(data, contentType))
-                    throw CustomException.Validation.InvalidImage;
-
-                // check image size
-                if (data.Length > _imageAllowedSize)
-                    throw CustomException.Validation.ImageTooBig(5);
-            }
+            // check image size
+            if (data.Length > _imageAllowedSize)
+                throw CustomException.Validation.ImageTooBig(5);
         }
         #endregion
     }
