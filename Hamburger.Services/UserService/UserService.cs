@@ -153,10 +153,10 @@ namespace Hamburger.Services.UserService
             var user = await _userManager.FindByNameAsync(request.Username);
 
             if (user == null)
-                throw CustomException.Authenticate.UserNotFound;
+                throw CustomException.Authentication.UserNotFound;
 
             if (!await _userManager.CheckPasswordAsync(user, request.Password))
-                throw CustomException.Authenticate.IncorrectPassword;
+                throw CustomException.Authentication.IncorrectPassword;
 
             var refreshTokens = await _loginSessionRepository.GetUserLoginSessions(user.Id);
 
@@ -173,7 +173,7 @@ namespace Hamburger.Services.UserService
             if (!createRoleResult.Succeeded)
             {
                 var errorInfo = createRoleResult.Errors.Select(e => $"{e.Code}: {e.Description}");
-                throw CustomException.Authenticate.AddRolesFailed(string.Join(", ", errorInfo));
+                throw CustomException.Authentication.AddRolesFailed(string.Join(", ", errorInfo));
             }
 
             // get created role
@@ -187,7 +187,7 @@ namespace Hamburger.Services.UserService
                 addClaimsResults.Add(result);
             }
             if (addClaimsResults.Any(r => !r.Succeeded))
-                throw CustomException.Authenticate.AddRolesFailed(string.Empty);
+                throw CustomException.Authentication.AddRolesFailed(string.Empty);
         }
 
         private async Task SeedUserRoleIfNotExist()
@@ -200,7 +200,7 @@ namespace Hamburger.Services.UserService
             if (!createRoleResult.Succeeded)
             {
                 var errorInfo = createRoleResult.Errors.Select(e => $"{e.Code}: {e.Description}");
-                throw CustomException.Authenticate.AddRolesFailed(string.Join(", ", errorInfo));
+                throw CustomException.Authentication.AddRolesFailed(string.Join(", ", errorInfo));
             }
 
             // get created role
@@ -211,7 +211,7 @@ namespace Hamburger.Services.UserService
             addClaimsResults.Add(await _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PermissionClaimValues.ViewUsers)));
             addClaimsResults.Add(await _roleManager.AddClaimAsync(role, new Claim(CustomClaimTypes.Permission, PermissionClaimValues.UpdateUsers)));
             if (addClaimsResults.Any(r => !r.Succeeded))
-                throw CustomException.Authenticate.AddRolesFailed(string.Empty);
+                throw CustomException.Authentication.AddRolesFailed(string.Empty);
         }
 
         private void ReformatRegisterRequest(RegisterRequest request)
@@ -259,12 +259,12 @@ namespace Hamburger.Services.UserService
             // check user has already existed
             var user = await _userManager.FindByNameAsync(request.Username);
             if (user != null)
-                throw CustomException.Authenticate.UserExisted;
+                throw CustomException.Authentication.UserExisted;
 
             // check roles valid
             var rolesCount = await _roleManager.Roles.Where(r => request.Roles.Any(r2 => r2 == r.Name)).CountAsync();
             if (rolesCount != request.Roles.Count())
-                throw CustomException.Authenticate.InvalidRole;
+                throw CustomException.Authentication.InvalidRole;
 
             // create new user
             ReformatRegisterRequest(request);
@@ -274,7 +274,7 @@ namespace Hamburger.Services.UserService
             if (!registerResult.Succeeded)
             {
                 var errorInfo = registerResult.Errors.Select(e => $"{e.Code}: {e.Description}");
-                throw CustomException.Authenticate.RegisterFailed(string.Join(", ", errorInfo));
+                throw CustomException.Authentication.RegisterFailed(string.Join(", ", errorInfo));
             }
 
             // add roles to user
@@ -282,7 +282,7 @@ namespace Hamburger.Services.UserService
             if (!addRolesResult.Succeeded)
             {
                 var errorInfo = registerResult.Errors.Select(e => $"{e.Code}: {e.Description}");
-                throw CustomException.Authenticate.AddRolesFailed(string.Join(", ", errorInfo));
+                throw CustomException.Authentication.AddRolesFailed(string.Join(", ", errorInfo));
             }
 
             // create new JWT and refresh token
@@ -378,7 +378,7 @@ namespace Hamburger.Services.UserService
             string username = principal.Identity.Name;
             var user = await _userManager.FindByNameAsync(username);
             if (user == null)
-                throw CustomException.Authenticate.UserNotFound;
+                throw CustomException.Authentication.UserNotFound;
 
             // get all user's refresh tokens in database
             var refreshTokens = await _loginSessionRepository.GetUserLoginSessions(user.Id);
@@ -387,13 +387,13 @@ namespace Hamburger.Services.UserService
             var currentRefreshToken = refreshTokens.FirstOrDefault(t => t.RefreshToken == request.RefreshToken);
 
             if (currentRefreshToken == null)
-                throw CustomException.Authenticate.LoginSessionExpired;
+                throw CustomException.Authentication.LoginSessionExpired;
 
             await _loginSessionRepository.Remove(currentRefreshToken.Id);
 
             // throw error if currentRefreshToken is expired
             if (currentRefreshToken.ExpirationDate < DateTime.UtcNow)
-                throw CustomException.Authenticate.LoginSessionExpired;
+                throw CustomException.Authentication.LoginSessionExpired;
 
             // create new JWT and refresh token
             return await CreateLoginResponse(user, request.UserAgent, refreshTokens.Where(t => t.RefreshToken != request.RefreshToken));
@@ -413,7 +413,7 @@ namespace Hamburger.Services.UserService
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken securityToken);
             if (principal == null || securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                throw CustomException.Authenticate.InvalidAccessToken;
+                throw CustomException.Authentication.InvalidAccessToken;
 
             return principal;
         }

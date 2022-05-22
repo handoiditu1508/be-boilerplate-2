@@ -38,19 +38,19 @@ namespace Hamburger.Helpers
             public static readonly CustomException InvalidPhoneNumber = new CustomException(EnumExceptionGroup.Validation, "VALIDATION_005", "Invalid phone number.");
             public static readonly CustomException InvalidImage = new CustomException(EnumExceptionGroup.Validation, "VALIDATION_006", "Invalid image.");
             public static CustomException ImageTooBig(int maximumMb) => new CustomException(EnumExceptionGroup.Validation, "VALIDATION_007", $"Image cannot be bigger than {maximumMb}Mb.");
+            public static CustomException InvalidTimeZoneId(string timeZoneId) => new(EnumExceptionGroup.Validation, "VALIDATION_008", $"Time zone id \"{timeZoneId}\" not found.");
         }
 
-        public static class Authenticate
+        public static class Authentication
         {
-            public static readonly CustomException UserNotFound = new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_001", "User not found.");
-            public static readonly CustomException IncorrectPassword = new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_002", "Incorrect password.");
-            public static readonly CustomException UserExisted = new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_003", "User already existed.");
-            public static readonly CustomException InvalidRole = new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_004", "Role is invalid.");
-            public static CustomException RegisterFailed(string additionalInfo = "") => new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_005", $"Unable to sign up." + (!additionalInfo.IsNullOrWhiteSpace() ? $" {additionalInfo}." : ""));
-            public static CustomException AddRolesFailed(string additionalInfo = "") => new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_006", $"Unable to add roles." + (!additionalInfo.IsNullOrWhiteSpace() ? $" {additionalInfo}." : ""));
-            public static readonly CustomException InvalidAccessToken = new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_007", "Access token is invalid.");
-            public static readonly CustomException LoginSessionExpired = new CustomException(EnumExceptionGroup.Authenticate, "Authenticate_008", "Login Session Expired.");
-            public static CustomException InvalidTimeZoneId(string timeZoneId) => new(EnumExceptionGroup.Authenticate, "Authenticate_009", $"Time zone id \"{timeZoneId}\" not found.");
+            public static readonly CustomException UserNotFound = new CustomException(EnumExceptionGroup.Authentication, "AUTHENTICATION_001", "User not found.");
+            public static readonly CustomException IncorrectPassword = new CustomException(EnumExceptionGroup.Authentication, "AUTHENTICATION_002", "Incorrect password.");
+            public static readonly CustomException UserExisted = new CustomException(EnumExceptionGroup.Authentication, "AUTHENTICATION_003", "User already existed.");
+            public static readonly CustomException InvalidRole = new CustomException(EnumExceptionGroup.Authentication, "AUTHENTICATION_004", "Role is invalid.");
+            public static CustomException RegisterFailed(string additionalInfo = "") => new CustomException(EnumExceptionGroup.Authentication, "AUTHENTICATION_005", $"Unable to sign up." + (!additionalInfo.IsNullOrWhiteSpace() ? $" {additionalInfo}." : ""));
+            public static CustomException AddRolesFailed(string additionalInfo = "") => new CustomException(EnumExceptionGroup.Authentication, "AUTHENTICATION_006", $"Unable to add roles." + (!additionalInfo.IsNullOrWhiteSpace() ? $" {additionalInfo}." : ""));
+            public static readonly CustomException InvalidAccessToken = new CustomException(EnumExceptionGroup.Authentication, "AUTHENTICATION_007", "Access token is invalid.");
+            public static readonly CustomException LoginSessionExpired = new CustomException(EnumExceptionGroup.Authentication, "AUTHENTICATION_008", "Login Session Expired.");
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Hamburger.Models.Common
         [Description("VALIDATION")]
         Validation,
         [Description("AUTHENTICATE")]
-        Authenticate
+        Authentication
     }
 
     public enum EnumComparisonOperator : byte

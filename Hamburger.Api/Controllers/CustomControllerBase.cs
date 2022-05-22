@@ -12,7 +12,7 @@ namespace Hamburger.Api.Controllers
             get
             {
                 var claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-                return claim != null ? int.Parse(claim.Value) : throw CustomException.Authenticate.InvalidAccessToken;
+                return claim != null ? int.Parse(claim.Value) : throw CustomException.Authentication.InvalidAccessToken;
             }
         }
 
