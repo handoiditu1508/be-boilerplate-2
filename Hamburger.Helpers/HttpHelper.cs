@@ -1,5 +1,6 @@
 ﻿using Hamburger.Helpers.Abstractions;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -97,6 +98,28 @@ namespace Hamburger.Helpers
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadAsAsync<T>();
+
+            return result;
+        }
+
+        public async Task<Stream> GetStreamResult(string path)
+        {
+            var response = await _httpClient.GetAsync(path);
+
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadAsStreamAsync();
+
+            return result;
+        }
+
+        public async Task<Stream> PostStreamResult(string path, object body)
+        {
+            var response = await _httpClient.PostAsJsonAsync(path, body);
+
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadAsStreamAsync();
 
             return result;
         }

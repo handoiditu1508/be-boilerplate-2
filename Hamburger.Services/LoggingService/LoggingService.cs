@@ -11,12 +11,14 @@ namespace Hamburger.Services.LoggingService
     public class LoggingService : ILoggingService
     {
         private readonly IHttpHelper _httpHelper;
+        private readonly string _subPath;
 
         public LoggingService(IHttpHelper httpHelper)
         {
             _httpHelper = httpHelper;
             _httpHelper.SetBaseUrl(AppSettings.LoggingService.BaseUrl);
             _httpHelper.UseApiKeyAuthentication("X-API-Key", AppSettings.LoggingService.ApiKey);
+            _subPath = "/api/MongoLogging";
         }
 
         /// <summary>
@@ -32,10 +34,7 @@ namespace Hamburger.Services.LoggingService
         /// <returns>List of logs along with total collection size and count.</returns>
         public async Task<GetLogsResponse> GetOutermostLogs(GetOutermostLogsRequest request)
         {
-            GetLogsResponse result = null;
-
-            result = await _httpHelper.Post<GetLogsResponse>("api/MongoLogging/GetOutermostLogs", request);
-
+            GetLogsResponse result = await _httpHelper.Post<GetLogsResponse>($"{_subPath}/GetOutermostLogs", request);
             return result;
         }
 
@@ -53,10 +52,7 @@ namespace Hamburger.Services.LoggingService
         /// <returns>List of logs along with total collection size and count.</returns>
         public async Task<GetLogsResponse> GetNearbyLogs(GetNearbyLogsRequest request)
         {
-            GetLogsResponse result = null;
-
-            result = await _httpHelper.Post<GetLogsResponse>("api/MongoLogging/GetNearbyLogs", request);
-
+            GetLogsResponse result = await _httpHelper.Post<GetLogsResponse>($"{_subPath}/GetNearbyLogs", request);
             return result;
         }
 
@@ -66,7 +62,7 @@ namespace Hamburger.Services.LoggingService
         /// <param name="collectionName">Name of the collection to be deleted.</param>
         public async Task DeleteCollection(string collectionName)
         {
-            await _httpHelper.Delete($"api/MongoLogging/DeleteCollection/{collectionName}");
+            await _httpHelper.Delete($"{_subPath}/DeleteCollection/{collectionName}");
         }
 
         /// <summary>
@@ -85,7 +81,7 @@ namespace Hamburger.Services.LoggingService
         {
             try
             {
-                await _httpHelper.Post("api/MongoLogging/InsertLogs", request);
+                await _httpHelper.Post($"{_subPath}/InsertLogs", request);
             }
             catch
             { }
@@ -107,7 +103,7 @@ namespace Hamburger.Services.LoggingService
         {
             try
             {
-                await _httpHelper.Post("api/MongoLogging/InsertLog", request);
+                await _httpHelper.Post($"{_subPath}/InsertLog", request);
             }
             catch
             { }
@@ -119,10 +115,7 @@ namespace Hamburger.Services.LoggingService
         /// <returns>List of string for collection names.</returns>
         public async Task<IEnumerable<string>> GetCollectionNames()
         {
-            IEnumerable<string> result = null;
-
-            result = await _httpHelper.Get<IEnumerable<string>>("api/MongoLogging/GetCollectionNames");
-
+            IEnumerable<string> result = await _httpHelper.Get<IEnumerable<string>>($"{_subPath}/GetCollectionNames");
             return result;
         }
     }

@@ -164,9 +164,9 @@ namespace Hamburger.Api
 
             app.UseHttpsRedirection();
 
-            app.UseCors(_appCors);
-
             app.UseRouting();
+
+            app.UseCors(_appCors);
 
             app.UseAuthentication();
 

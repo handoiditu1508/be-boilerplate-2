@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace Hamburger.Helpers.Abstractions
 {
@@ -81,5 +82,20 @@ namespace Hamburger.Helpers.Abstractions
         /// <param name="path">Request path.</param>
         /// <returns>Object type of T.</returns>
         Task<T> Delete<T>(string path);
+
+        /// <summary>
+        /// Send GET request and get file as stream.
+        /// </summary>
+        /// <param name="path">Request path.</param>
+        /// <returns>Stream of the file.</returns>
+        Task<Stream> GetStreamResult(string path);
+
+        /// <summary>
+        /// Send POST request and get file as stream.
+        /// </summary>
+        /// <param name="path">Request path.</param>
+        /// <param name="body">Request body.</param>
+        /// <returns>Stream of the file.</returns>
+        Task<Stream> PostStreamResult(string path, object body);
     }
 }
