@@ -49,7 +49,7 @@ namespace Hamburger.Api
                 options.AddPolicy(_appCors,
                     policy =>
                     {
-                        policy.WithOrigins("https://localhost:44373")
+                        policy.WithOrigins("http://localhost:3000")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .WithExposedHeaders("X-Total-Count");
