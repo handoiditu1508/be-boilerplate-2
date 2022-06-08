@@ -1,6 +1,7 @@
 ﻿using Hamburger.Models.Entities.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Hamburger.Models.Entities
@@ -17,6 +18,7 @@ namespace Hamburger.Models.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
 
+        public virtual ICollection<IdentityUserRole<int>> UserRoles { get; set; }
         public string FullName => MiddleName == null ? $"{LastName} {FirstName}" : $"{LastName} {MiddleName} {FirstName}";
     }
 }

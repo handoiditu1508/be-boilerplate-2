@@ -20,5 +20,12 @@ namespace Hamburger.Repository.Abstraction.Repositories
         /// <param name="filterModel">Filter criteria.</param>
         /// <returns>Total records after filter.</returns>
         Task<int> GetTotalCount(UserFilterModel filterModel);
+
+        /// <summary>
+        /// Get user include user's roles.
+        /// </summary>
+        /// <param name="id">User's primary key.</param>
+        /// <returns>User with user's roles included.</returns>
+        Task<User> GetWithRoles(int id);
     }
 }

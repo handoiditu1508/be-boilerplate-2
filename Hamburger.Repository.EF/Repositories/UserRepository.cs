@@ -161,5 +161,10 @@ namespace Hamburger.Repository.EF.Repositories
 
             await base.RemoveManyCompositeKeys(listCompositeIds);
         }
+
+        public async Task<User> GetWithRoles(int id)
+        {
+            return await _context.Users.Include(u => u.UserRoles).FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

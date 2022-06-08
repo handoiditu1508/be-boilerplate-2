@@ -5,8 +5,10 @@ using Hamburger.Models.Entities;
 using Hamburger.Models.FilterModels;
 using Hamburger.Repository.Abstraction.Repositories;
 using Hamburger.Repository.Dapper.Helpers;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hamburger.Repository.Dapper.Repositories
@@ -152,6 +154,23 @@ namespace Hamburger.Repository.Dapper.Repositories
             }
 
             return sql;
+        }
+
+        public async Task<User> GetWithRoles(int id)
+        {
+            var param = new
+            {
+                UserTable = _tableName,
+                UserRolesTable = AppConstants.UserRoles,
+                UserPk = _primaryKey,
+                UserRolesFk = nameof(IdentityUserRole<int>.UserId)
+            };
+
+            var sql = $"SELECT * from @UserTable u inner join @UserRolesTable ur on u.@UserPk = ur.@UserRolesFk;";
+
+            var result = await Get(sql, param);
+
+            return result.Single();
         }
     }
 }
