@@ -20,5 +20,6 @@ namespace Hamburger.Services.Abstractions.UserService
         Task<LoginResponse> RefreshToken(RefreshTokenRequest request);
         Task Logout(LogoutRequest request);
         Task<int> Count(UserFilterModel filter);
+        Task<UserFullDetails> GetFullDetails(int id);
     }
 }

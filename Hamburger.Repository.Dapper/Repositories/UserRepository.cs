@@ -1,4 +1,5 @@
-﻿using Hamburger.Helpers;
+﻿using Dapper;
+using Hamburger.Helpers;
 using Hamburger.Helpers.Extensions;
 using Hamburger.Models.Common;
 using Hamburger.Models.Entities;
@@ -8,6 +9,7 @@ using Hamburger.Repository.Dapper.Helpers;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -156,19 +158,45 @@ namespace Hamburger.Repository.Dapper.Repositories
             return sql;
         }
 
-        public async Task<User> GetWithRoles(int id)
+
+        public async Task<User> GetFullDetails(int id)
         {
+            // reference: https://www.learndapper.com/relationships
+
             var param = new
             {
-                UserTable = _tableName,
-                UserRolesTable = AppConstants.UserRoles,
-                UserPk = _primaryKey,
-                UserRolesFk = nameof(IdentityUserRole<int>.UserId)
+                Id = id
             };
 
-            var sql = $"SELECT * from @UserTable u inner join @UserRolesTable ur on u.@UserPk = ur.@UserRolesFk;";
+            var sql = $@"SELECT u.*, r.*
+                        FROM {_tableName} u
+                        INNER JOIN {AppConstants.UserRoles} ur ON ur.{nameof(IdentityUserRole<int>.UserId)} = u.{_primaryKey}
+                        INNER JOIN {AppConstants.Roles} r ON r.{nameof(Role.Id)} = ur.{nameof(IdentityUserRole<int>.RoleId)}
+                        WHERE u.{_primaryKey} = @Id;";
 
-            var result = await Get(sql, param);
+            IEnumerable<User> users;
+
+            using (var connection = GetDbConnection())
+            {
+                if (connection.State == ConnectionState.Closed)
+                    await connection.OpenAsync();
+
+                users = await connection.QueryAsync<User, Role, User>(sql, (user, role) =>
+                {
+                    user.Roles.Add(role);
+                    return user;
+                }, splitOn: nameof(Role.Id), param: param);
+
+                if (connection.State == ConnectionState.Open)
+                    await connection.CloseAsync();
+            }
+
+            var result = users.GroupBy(u => u.Id).Select(g =>
+            {
+                var groupedUser = g.First();
+                groupedUser.Roles = g.Select(u => u.Roles.Single()).ToList();
+                return groupedUser;
+            });
 
             return result.Single();
         }

@@ -41,6 +41,25 @@ namespace Hamburger.Repository.EF
                 .WithMany()
                 .HasForeignKey(ls => ls.UserId);
 
+            // Configs many to many between User and Role
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Roles)
+                .WithMany(r => r.Users)
+                .UsingEntity<IdentityUserRole<int>>(
+                    j => j
+                        .HasOne<Role>()
+                        .WithMany()
+                        .HasForeignKey(ur => ur.RoleId),
+                    j => j
+                        .HasOne<User>()
+                        .WithMany()
+                        .HasForeignKey(ur => ur.UserId),
+                    j =>
+                    {
+                        j.HasKey(ur => new { ur.UserId, ur.RoleId });
+                    }
+                );
+
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))

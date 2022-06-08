@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hamburger.Models.Entities;
 using Hamburger.Models.Requests.UserService;
+using System.Linq;
 
 namespace Hamburger.Models.UserService
 {
@@ -9,7 +10,7 @@ namespace Hamburger.Models.UserService
         public UserMapperProfile()
         {
             CreateMap<User, UserViewModel>();
-            CreateMap<User, LoginUserData>().ForMember(d => d.Roles, options => options.Ignore());
+            CreateMap<User, UserFullDetails>().ForMember(d => d.Roles, options => options.MapFrom(s => s.Roles.Select(r => r.Name)));
             CreateMap<RegisterRequest, User>();
         }
     }

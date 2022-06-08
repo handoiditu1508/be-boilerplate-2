@@ -54,6 +54,30 @@ namespace Hamburger.Api.Controllers.Admin.UserService
         }
 
         /// <summary>
+        /// Get full details user information by id.
+        /// </summary>
+        /// <param name="id">Id of user to get.</param>
+        /// <returns>UserFullDetails.</returns>
+        [HttpGet]
+        [Route(nameof(FullDetails) + "/{id}")]
+        [Authorize(PermissionClaimPolicies.AdminViewUsers)]
+        [ProducesResponseType(typeof(UserFullDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(SimpleError), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<UserFullDetails>> FullDetails(int id)
+        {
+            try
+            {
+                return Ok(await _userService.GetFullDetails(id));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.ToSimpleError());
+            }
+        }
+
+        /// <summary>
         /// Filter list user.
         /// </summary>
         /// <returns>Array of UserViewModel.</returns>

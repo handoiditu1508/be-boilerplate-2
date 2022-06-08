@@ -9,6 +9,6 @@ namespace Hamburger.Models.Responses.UserService
         public DateTime Expiration { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiration { get; set; }
-        public LoginUserData User { get; set; }
+        public UserFullDetails User { get; set; }
     }
 }

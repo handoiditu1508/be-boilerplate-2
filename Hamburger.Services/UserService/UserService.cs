@@ -130,7 +130,7 @@ namespace Hamburger.Services.UserService
             {
                 Expiration = token.ValidTo,
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
-                User = _mapper.Map<LoginUserData>(user),
+                User = _mapper.Map<UserFullDetails>(user),
                 RefreshToken = refreshToken.RefreshToken,
                 RefreshTokenExpiration = refreshToken.ExpirationDate
             };
@@ -445,6 +445,13 @@ namespace Hamburger.Services.UserService
             var result = await _userRepository.GetTotalCount(filter);
 
             return result;
+        }
+
+        public async Task<UserFullDetails> GetFullDetails(int id)
+        {
+            var user = await _userRepository.GetFullDetails(id);
+            var userFullDetails = _mapper.Map<UserFullDetails>(user);
+            return userFullDetails;
         }
     }
 }

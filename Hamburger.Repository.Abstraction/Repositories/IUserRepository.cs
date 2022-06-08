@@ -22,10 +22,10 @@ namespace Hamburger.Repository.Abstraction.Repositories
         Task<int> GetTotalCount(UserFilterModel filterModel);
 
         /// <summary>
-        /// Get user include user's roles.
+        /// Get user including navigation properties.
         /// </summary>
         /// <param name="id">User's primary key.</param>
-        /// <returns>User with user's roles included.</returns>
-        Task<User> GetWithRoles(int id);
+        /// <returns>User with all navigation properties loaded.</returns>
+        Task<User> GetFullDetails(int id);
     }
 }

@@ -18,7 +18,7 @@ namespace Hamburger.Models.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<IdentityUserRole<int>> UserRoles { get; set; }
+        public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
         public string FullName => MiddleName == null ? $"{LastName} {FirstName}" : $"{LastName} {MiddleName} {FirstName}";
     }
 }

@@ -6,6 +6,7 @@ using Hamburger.Repository.Abstraction.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -162,9 +163,9 @@ namespace Hamburger.Repository.EF.Repositories
             await base.RemoveManyCompositeKeys(listCompositeIds);
         }
 
-        public async Task<User> GetWithRoles(int id)
+        public async Task<User> GetFullDetails(int id)
         {
-            return await _context.Users.Include(u => u.UserRoles).FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Users.Include(u => u.Roles).SingleOrDefaultAsync(u => u.Id == id);
         }
     }
 }
